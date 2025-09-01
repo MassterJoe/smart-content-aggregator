@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2021",
+    "outDir": "dist",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+  },
+  "include": [
+    "src/**/*",
+    "src/global.d.ts"
+, "src/app.ts", "src/env.ts", "src/ioc.ts", "../airtime-nexus-flow/src"  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+    "entryFile": "src/app.ts",
+    "noImplicitAdditionalProperties": "silently-remove-extras",
+    "controllerPathGlobs": [
+        "src/api/controllers/**/*.ts"
+    ],
+    "spec": {
+        "outputDirectory": "src/api/swagger",
+        "specVersion": 3,
+        "basePath": "/",
+        "specFileBaseName": "swagger",
+        "securityDefinitions": {
+            "bearerAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        },
+        "schemes": ["http"],
+        "servers":["localhost:5000"],
+        "security": [
+            {
+                "bearerAuth": []
+            }
+        ]
+    },
+    "routes": {
+        "routesDir": "src/api/routes",
+        "iocModule": "src/ioc.ts",
+        "authenticationModule": "src/api/middlewares/authentication.ts"
+    }
+}
