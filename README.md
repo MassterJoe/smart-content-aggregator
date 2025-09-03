@@ -52,6 +52,7 @@ Smart Content Aggregator Service is an API that enables users to publish, intera
 - RabbitMQ  
 - SMTP / SendGrid for email notifications  
 
+- Swagger for documentation http://localhost:5000/api/docs
 ---
 
 ## Getting Started
@@ -151,6 +152,34 @@ src/
 5. Articles submitted without a summary will automatically generate one using AI summarization.
 
 ---
+
+
+## What i would do if i had more time
+1. Implement Redis for Caching
+
+    - Cache popular articles and recommendations to reduce database load and improve response times.
+
+2. Containerize the Application with Docker
+
+    - Create Dockerfiles and Docker Compose setup for consistent development and deployment environments.
+
+3. Improve Error Handling
+
+  - Introduce standardized error classes and a global error-handling middleware to make responses consistent.
+
+4. Enhance Security
+
+  - Add rate limiting, input validation hardening, and HTTP header protection (e.g., Helmet).
+
+5. Refactor & Clean Up Code
+
+  - Remove duplication, improve modularity, and follow consistent coding standards for better maintainability.
+
+6. Write Unit & Integration Tests
+
+  - Add automated tests (Jest + Supertest) to improve reliability and catch regressions early.
+
+
 
 ## License
 
