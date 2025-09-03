@@ -10,9 +10,7 @@ import {
     normalizePort
 } from "./lib/env";
 
-/**
- * Load .env file or for tests the .env.test file.
- */
+
 dotenv.config({
     path: path.join(
         process.cwd(),
@@ -61,8 +59,5 @@ export const env = {
     MAIL_FROM: getOsEnv("MAIL_FROM"),
     RABBITMQ_URL: getOsEnv("RABBITMQ_URL"),
     GEMINI_API_KEY: getOsEnv("GEMINI_API_KEY")
-    // OKRA:{
-    //     BASE_URL: getOsEnv('OKRA_URL'),
-    //     KEY: getOsEnv('OKRA_KEY'),
-    // }
+  
 };

@@ -1,4 +1,3 @@
-// helpers/responseHandlers.ts
 export interface CustomApiResponse<T = any> {
   success?: boolean;
   status_code: number;

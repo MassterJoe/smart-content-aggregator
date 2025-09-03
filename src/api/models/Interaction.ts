@@ -11,7 +11,7 @@ export type InteractionType =
   | "view";
 
 export interface IInteraction extends Document {
-  _id: mongoose.Types.ObjectId; // 👈 fix unknown issue
+  _id: mongoose.Types.ObjectId; 
   user: mongoose.Types.ObjectId;
   article: mongoose.Types.ObjectId;
   type: InteractionType;
@@ -56,7 +56,7 @@ const InteractionSchema: Schema<IInteraction> = new Schema(
   { timestamps: true }
 );
 
-// Prevent duplicate interactions of same type (e.g., multiple likes by same user on same article)
+
 InteractionSchema.index({ user: 1, article: 1, type: 1 }, { unique: true });
 
 const Interaction = mongoose.model<IInteraction>(

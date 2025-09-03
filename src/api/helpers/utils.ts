@@ -87,8 +87,6 @@ export function generateRandomString(
     }
 
 
-
-
 export async function generateSummary(content: string): Promise<string> {
   const prompt = `
   Summarize the following article into a concise summary, keeping the main points intact:

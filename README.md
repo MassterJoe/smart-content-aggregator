@@ -15,8 +15,7 @@ Smart Content Aggregator Service is an API that enables users to publish, intera
 - [Getting Started](#getting-started)  
 - [Project Structure](#project-structure)  
 - [API Endpoints](#api-endpoints)  
-- [Usage](#usage)  
-- [Contributing](#contributing)  
+- [Usage](#usage)   
 - [License](#license)  
 
 ---
@@ -150,16 +149,6 @@ src/
 3. Interact with articles (like, comment, share, bookmark).
 4. Fetch recommended articles based on your interests and popular articles.
 5. Articles submitted without a summary will automatically generate one using AI summarization.
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -m 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Open a Pull Request
 
 ---
 

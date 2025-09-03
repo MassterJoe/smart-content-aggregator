@@ -68,7 +68,7 @@ const UserSchema = new Schema<IUser>(
     status: {
       type: String,
       enum: ["active", "inactive", "suspended"],
-      default: "inactive", // inactive until email verified
+      default: "inactive", 
     },
     interests: {
       type: [String],

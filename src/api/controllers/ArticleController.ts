@@ -14,7 +14,7 @@ export class ArticleController extends Controller {
 
   @Post("/{userId}")
   public async createArticle(
-    @Path() userId: string, // ✅ for now we take userId from path
+    @Path() userId: string, 
     @Body() body: CreateArticleDTO
   ): Promise<ArticleResponseDTO> {
     return this.articleService.createArticle(userId, body);
