@@ -100,7 +100,7 @@ const models: TsoaRoute.Models = {
             "articleId": {"dataType":"string","required":true},
             "userId": {"dataType":"string","required":true},
             "type": {"ref":"InteractionType","required":true},
-            "comment": {"dataType":"string"},
+            "commentText": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -111,6 +111,7 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"string","required":true},
             "title": {"dataType":"string","required":true},
             "content": {"dataType":"string","required":true},
+            "summary": {"dataType":"string"},
             "tags": {"dataType":"array","array":{"dataType":"string"},"required":true},
             "author": {"dataType":"string","required":true},
             "views": {"dataType":"double","required":true},
@@ -126,6 +127,7 @@ const models: TsoaRoute.Models = {
             "title": {"dataType":"string","required":true},
             "content": {"dataType":"string","required":true},
             "tags": {"dataType":"array","array":{"dataType":"string"}},
+            "summary": {"dataType":"string"},
             "author": {"dataType":"string","required":true},
             "url": {"dataType":"string"},
         },
@@ -440,27 +442,27 @@ export function RegisterRoutes(app: Router) {
                 response,
                 next,
                 validatedArgs,
-                successStatus: undefined,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsInteractionController_getInteractions: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsInteractionController_getInteractionsByArticle: Record<string, TsoaRoute.ParameterSchema> = {
                 articleId: {"in":"path","name":"articleId","required":true,"dataType":"string"},
         };
         app.get('/interactions/:articleId',
             ...(fetchMiddlewares<RequestHandler>(InteractionController)),
-            ...(fetchMiddlewares<RequestHandler>(InteractionController.prototype.getInteractions)),
+            ...(fetchMiddlewares<RequestHandler>(InteractionController.prototype.getInteractionsByArticle)),
 
-            async function InteractionController_getInteractions(request: ExRequest, response: ExResponse, next: any) {
+            async function InteractionController_getInteractionsByArticle(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsInteractionController_getInteractions, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsInteractionController_getInteractionsByArticle, request, response });
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
@@ -470,7 +472,7 @@ export function RegisterRoutes(app: Router) {
                 }
 
               await templateService.apiHandler({
-                methodName: 'getInteractions',
+                methodName: 'getInteractionsByArticle',
                 controller,
                 response,
                 next,
@@ -647,6 +649,41 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getAllArticles',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsArticleController_getRecommendations: Record<string, TsoaRoute.ParameterSchema> = {
+                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+        };
+        app.get('/articles/recommendations/:userId',
+            ...(fetchMiddlewares<RequestHandler>(ArticleController)),
+            ...(fetchMiddlewares<RequestHandler>(ArticleController.prototype.getRecommendations)),
+
+            async function ArticleController_getRecommendations(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsArticleController_getRecommendations, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<ArticleController>(ArticleController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'getRecommendations',
                 controller,
                 response,
                 next,

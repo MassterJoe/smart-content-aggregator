@@ -224,7 +224,7 @@
 						"$ref": "#/components/schemas/InteractionType",
 						"example": "like"
 					},
-					"comment": {
+					"commentText": {
 						"type": "string",
 						"example": "Great article! Very insightful."
 					}
@@ -250,6 +250,10 @@
 					"content": {
 						"type": "string",
 						"example": "This article explains how to build a smart content aggregator..."
+					},
+					"summary": {
+						"type": "string",
+						"example": "This explains it"
 					},
 					"tags": {
 						"items": {
@@ -312,6 +316,12 @@
 							"tech",
 							"ai",
 							"innovation"
+						]
+					},
+					"summary": {
+						"type": "string",
+						"example": [
+							"Artificial intelligence ..."
 						]
 					},
 					"author": {
@@ -724,7 +734,7 @@
 				"operationId": "CreateInteraction",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Interaction Created",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -734,6 +744,7 @@
 						}
 					}
 				},
+				"description": "Create a new interaction on an article",
 				"tags": [
 					"Interactions"
 				],
@@ -753,7 +764,7 @@
 		},
 		"/interactions/{articleId}": {
 			"get": {
-				"operationId": "GetInteractions",
+				"operationId": "GetInteractionsByArticle",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -769,6 +780,7 @@
 						}
 					}
 				},
+				"description": "Get all interactions for a specific article",
 				"tags": [
 					"Interactions"
 				],
@@ -808,6 +820,7 @@
 						}
 					}
 				},
+				"description": "Delete a specific interaction",
 				"tags": [
 					"Interactions"
 				],
@@ -964,6 +977,41 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/articles/recommendations/{userId}": {
+			"get": {
+				"operationId": "GetRecommendations",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ArticleResponseDTO"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get article recommendations for a user",
+				"tags": [
+					"Articles"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

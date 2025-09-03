@@ -59,4 +59,14 @@ export class ArticleController extends Controller {
 
     return successResponse("Articles retrieved successfully", 200, articles);
   }
+
+   /**
+   * Get article recommendations for a user
+   */
+  @Get("/recommendations/{userId}")
+  public async getRecommendations(
+    @Path() userId: string
+  ): Promise<ArticleResponseDTO[]> {
+    return this.articleService.getRecommendations(userId);
+  }
 }

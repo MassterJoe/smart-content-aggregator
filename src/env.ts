@@ -60,6 +60,7 @@ export const env = {
     SENDGRID_API_KEY: getOsEnv("SENDGRID_API_KEY"),
     MAIL_FROM: getOsEnv("MAIL_FROM"),
     RABBITMQ_URL: getOsEnv("RABBITMQ_URL"),
+    GEMINI_API_KEY: getOsEnv("GEMINI_API_KEY")
     // OKRA:{
     //     BASE_URL: getOsEnv('OKRA_URL'),
     //     KEY: getOsEnv('OKRA_KEY'),

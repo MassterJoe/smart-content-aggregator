@@ -5,13 +5,23 @@ import { env } from "../../env";
 import { v4 as uuid } from "uuid";
 import moment from "moment";
 import { CharacterCasing } from "../enums/CharacterCasing";
-import User from "../models/User";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 const DEFAULT_CHARACTER_LENGTH = 12;
 
 const chance = new Chance();
 
+const geminiApiKey = env.GEMINI_API_KEY;
+if (!geminiApiKey) throw new Error("API_KEY not set");
+
+const googleAI = new GoogleGenerativeAI(geminiApiKey);
+// const geminiConfig = {
+//   temperature: 0.7,
+//   topP: 1,
+//   topK: 1,
+//   maxOutputTokens: 300, 
+// };
 
 export function generateRandomString(
     {
@@ -77,14 +87,22 @@ export function generateRandomString(
     }
 
 
-// // export const sanitizeUser = (user: User) => {
-// //   if (!user) return null;
 
-// //   return {
-// //     id: user.id,
-// //     email: user.email,
-// //     first_name: user.first_name,
-// //     last_name: user.last_name,
-// //     phone_number: user.phone_number
-// //   };
-// };
+
+export async function generateSummary(content: string): Promise<string> {
+  const prompt = `
+  Summarize the following article into a concise summary, keeping the main points intact:
+  ${content}
+  `;
+
+  const geminiModel = googleAI.getGenerativeModel({
+    model: "gemini-2.5-flash"
+  });
+
+  const result = await geminiModel.generateContent(prompt);
+  const response = result.response;
+  const summary = response.text();
+
+  return summary.trim();
+}
+

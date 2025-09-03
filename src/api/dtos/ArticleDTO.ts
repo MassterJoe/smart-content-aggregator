@@ -10,6 +10,9 @@ export class CreateArticleDTO {
   @Example(["tech", "ai", "innovation"])
   tags?: string[];
 
+  @Example(["Artificial intelligence ..."])
+  summary?: string;
+
   @Example("60f7f0a5b6f7c9a3d8b12345")
   author!: string;
   
@@ -38,6 +41,9 @@ export class ArticleResponseDTO {
 
   @Example("This article explains how to build a smart content aggregator...")
   content!: string;
+
+  @Example("This explains it")
+  summary?: string;
 
   @Example(["tech", "nodejs", "aggregator"])
   tags!: string[];

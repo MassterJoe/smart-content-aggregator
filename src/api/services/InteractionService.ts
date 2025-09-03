@@ -10,7 +10,7 @@ export default class InteractionService {
       article: dto.articleId,
       user: dto.userId,
       type: dto.type,
-      comment: dto.comment,
+      comment: dto.commentText,
     });
 
     const saved = await interaction.save();

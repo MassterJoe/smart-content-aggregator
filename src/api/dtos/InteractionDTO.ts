@@ -21,7 +21,7 @@ export class CreateInteractionDTO {
   type!: InteractionType;
 
   @Example("Great article! Very insightful.")
-  comment?: string;
+  commentText?: string;
 }
 
 export class InteractionResponseDTO {
