@@ -10,7 +10,7 @@ import { Container } from "typedi";
 
 import { env } from "../env";
 import { logLoader } from "./logger";
-import { postgresLoader } from "./postgres";
+import { dbConnection } from "./mongo";
 // import { redisLoader } from "./redis";
 import { corsOptions } from "./cors";
 import { RegisterRoutes } from "../api/routes/routes";
@@ -40,12 +40,15 @@ const expressConfig = async (app: Application): Promise<void> => {
 
   // Infra loaders
   await logLoader();
-  await postgresLoader();
+
+  async () => {
+    await dbConnection;
+  }
   // await redisLoader();
   RegisterRoutes(app);
   const consumerService = Container.get(ConsumerService);
   await consumerService.startConsumer();
-  
+
   // API Docs
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   // Health check
@@ -53,7 +56,7 @@ const expressConfig = async (app: Application): Promise<void> => {
     res.status(200).json({ status: "ok" });
   });
 
-  
+
 
 };
 

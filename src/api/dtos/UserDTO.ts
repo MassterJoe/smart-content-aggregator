@@ -1,6 +1,8 @@
 import { 
+  IsArray,
   IsDateString,
   IsEmail, 
+  IsEnum,
   IsOptional, 
   IsString, 
   IsStrongPassword, 
@@ -12,19 +14,14 @@ import { Example } from "tsoa";
  * DTO for creating a new user
  */
 export class CreateUserDTO {
+  @IsString()
+  @Length(3, 30)
+  @Example("SalawuJoseph")
+  username!: string;
+
   @IsEmail()
   @Example("john.doe@example.com")
   email!: string;
-
-  @IsString()
-  @Length(3, 50)
-  @Example("John")
-  first_name!: string;
-
-  @IsString()
-  @Length(3, 50)
-  @Example("Doe")
-  last_name!: string;
 
   @IsStrongPassword(
     { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 },
@@ -34,19 +31,20 @@ export class CreateUserDTO {
   password!: string;
 
   @IsOptional()
-  @IsString()
-  @Example("+2348012345678")
-  phone_number?: string;
+  @IsEnum(["user", "admin"])
+  @Example("user")
+  role?: "user" | "admin";
 
   @IsOptional()
-  @IsString()
-  @Example("12345678901")
-  bvn?: string;
+  @IsEnum(["active", "inactive", "suspended"])
+  @Example("active")
+  status?: "active" | "inactive" | "suspended";
 
   @IsOptional()
-  @IsDateString()
-  @Example("1990-01-01")
-  bvn_dob?: string;
+  @IsArray()
+  @IsString({ each: true })
+  @Example(["tech", "sports"])
+  interests?: string[];
 }
 
 /**
@@ -58,7 +56,7 @@ export class AuthUserDTO {
   email!: string;
 
   @IsString()
-  @Length(8, 20)
+  @Length(8, 50)
   @Example("Password123!")
   password!: string;
 }
@@ -69,23 +67,14 @@ export class AuthUserDTO {
 export class UpdateUserDTO {
   @IsOptional()
   @IsString()
-  @Example("John")
-  first_name?: string;
-
-  @IsOptional()
-  @IsString()
-  @Example("Doe")
-  last_name?: string;
+  @Length(3, 30)
+  @Example("NewUsername")
+  username?: string;
 
   @IsOptional()
   @IsEmail()
   @Example("john.doe@example.com")
   email?: string;
-
-  @IsOptional()
-  @IsString()
-  @Example("+2348012345678")
-  phone_number?: string;
 
   @IsOptional()
   @IsStrongPassword(
@@ -94,16 +83,26 @@ export class UpdateUserDTO {
   )
   @Example("NewPassword123!")
   password?: string;
+
+  @IsOptional()
+  @IsEnum(["active", "inactive", "suspended"])
+  @Example("inactive")
+  status?: "active" | "inactive" | "suspended";
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  @Example(["politics", "health"])
+  interests?: string[];
 }
 
 /**
  * DTO for verifying user email
  */
 export class EmailVerificationDTO {
-  @IsOptional()
   @IsString()
   @Example("123456")
-  otp?: string;
+  otp!: string;
 
   @IsString()
   @Example("a1b2c3d4-e5f6-7890-1234-56789abcdef0")

@@ -77,14 +77,14 @@ export function generateRandomString(
     }
 
 
-export const sanitizeUser = (user: User) => {
-  if (!user) return null;
+// // export const sanitizeUser = (user: User) => {
+// //   if (!user) return null;
 
-  return {
-    id: user.id,
-    email: user.email,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    phone_number: user.phone_number
-  };
-};
+// //   return {
+// //     id: user.id,
+// //     email: user.email,
+// //     first_name: user.first_name,
+// //     last_name: user.last_name,
+// //     phone_number: user.phone_number
+// //   };
+// };

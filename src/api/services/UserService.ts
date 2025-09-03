@@ -1,9 +1,6 @@
+// services/userService.ts
 import { Service, Inject } from "typedi";
-import { dataSource } from "../../config/postgres";
-import { EntityManager } from "typeorm";
-import User from "../models/User";
-import Wallet from "../models/Wallet";
-import WalletService from "./WalletService";
+import User, { IUser } from "../models/User";
 import { AppError } from "../errors/AppError";
 import { Logger } from "../../lib/logger";
 import { RabbitMQService } from "../queues/rabbitmqService";
@@ -12,74 +9,70 @@ import {
   generateJWT,
   generateRandomString,
   generateUUID,
-  hashString
+  hashString,
 } from "../helpers/utils";
-import { UserRepository } from "../repositories/UserRepository";
 import { AccountStatus } from "../enums/AccountStatus";
 import { env } from "../../env";
-import { EmailVerificationDTO } from "../dtos/UserDTO";
 
 @Service()
 export default class UserService {
   constructor(
-    private readonly walletService: WalletService,
     private readonly rabbitmqService: RabbitMQService,
     @Inject(() => Logger) private readonly logger: Logger
   ) {}
 
-   /**
-   * Register a new user (without creating a wallet)
+  /**
+   * Register new user
    */
-  public async registerUser(userData: Partial<User>): Promise<User> {
-    return await dataSource.transaction(async (manager) => {
-      // Check if email exists
-      const existingUser = await manager.findOne(User, { where: { email: userData.email } });
-      if (existingUser) throw new AppError("User already exists", 400);
+  public async registerUser(userData: Partial<IUser>): Promise<IUser> {
+    // Check if email already exists
+    const existingUser = await User.findOne({ email: userData.email });
+    if (existingUser) throw new AppError("Email already in use", 400);
 
-      // Hash password
-      const password_hash = await hashString(userData.password as string);
+    // Hash password
+    const password_hash = await hashString(userData.password as string);
 
-      // Generate OTP and verification token
-      const otp = generateRandomString({ length: 6, numericOnly: true });
-      const { uuid, expiresAt } = generateUUID();
+    // Generate OTP and verification token
+    const otp = generateRandomString({ length: 6, numericOnly: true });
+    const { uuid, expiresAt } = generateUUID();
 
-      // Create user
-      const user = manager.create(User, {
-        ...userData,
-        password: password_hash,
-        otp,
-        email_verification_token: uuid,
-        email_verification_expires_at: expiresAt,
-        status: AccountStatus.INACTIVE,
-      });
-
-      await manager.save(user);
-
-      // Queue verification email
-      try {
-        const verification_link = `${env.app.url}/verify-email?verification_token=${uuid}&otp=${otp}`;
-        await this.rabbitmqService.sendRabbitMQMessage("registration", {
-          name: user.first_name,
-          otp,
-          verification_link,
-          email: user.email,
-          subject: "Account Activation",
-          email_category: "registration",
-        });
-      } catch (err: any) {
-        this.logger.error(`[UserService] Failed to queue verification email: ${err.message}`);
-      }
-
-      return user;
+    // Create user
+    const user = new User({
+      ...userData,
+      password: password_hash,
+      otp,
+      email_verification_token: uuid,
+      email_verification_expires_at: expiresAt,
+      status: AccountStatus.INACTIVE,
     });
+
+    await user.save();
+
+    // Queue verification email
+    try {
+      const verification_link = `${env.app.url}/verify-email?verification_token=${uuid}&otp=${otp}`;
+      await this.rabbitmqService.sendRabbitMQMessage("registration", {
+        name: user.username,
+        otp,
+        verification_link,
+        email: user.email,
+        subject: "Account Activation",
+        email_category: "registration",
+      });
+    } catch (err: any) {
+      this.logger.error(
+        `[UserService] Failed to queue verification email: ${err.message}`
+      );
+    }
+
+    return user;
   }
 
   /**
    * Validate email with OTP + token
    */
-  public async validateEmail(req: EmailVerificationDTO): Promise<void> {
-    const { otp, verification_token } = req;
-    const existingUser = await UserRepository.findUserByOtp(otp as string);
+  public async validateEmail(otp: string, verification_token: string): Promise<void> {
+    const existingUser = await User.findOne({ otp });
     if (!existingUser) throw new AppError("Invalid email or otp", 400);
     if (existingUser.email_verification_token !== verification_token)
       throw new AppError("Invalid verification token", 400);
@@ -91,7 +84,7 @@ export default class UserService {
     existingUser.otp = "";
     existingUser.email_verification_token = "";
 
-    await UserRepository.save(existingUser);
+    await existingUser.save();
   }
 
   /**
@@ -99,20 +92,23 @@ export default class UserService {
    */
   public async loginUser(email: string, password: string): Promise<string> {
     try {
-      const existingUser = await UserRepository.findByEmail(email);
+      const existingUser = await User.findOne({ email });
       if (!existingUser) throw new AppError("Invalid email or password", 400);
 
-      const isPasswordValid = await compareHash(password, existingUser.password as string);
+      const isPasswordValid = await compareHash(
+        password,
+        existingUser.password as string
+      );
       if (!isPasswordValid) throw new AppError("Invalid email or password", 400);
 
       if (existingUser.status !== AccountStatus.ACTIVE)
         throw new AppError("Please verify your email before logging in", 403);
 
       existingUser.last_login = new Date();
-      await UserRepository.save(existingUser);
+      await existingUser.save();
 
       return generateJWT(existingUser.email, existingUser.id);
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error("Error in loginUser:", error);
       throw new AppError("Invalid Email or password", 500);
     }
@@ -121,8 +117,8 @@ export default class UserService {
   /**
    * Get user by ID
    */
-  public async getUserById(userId: string): Promise<any> {
-    const user = await UserRepository.findOne({ where: { id: userId }, relations: ["wallet"] });
+  public async getUserById(userId: string): Promise<IUser> {
+    const user = await User.findById(userId).populate("bookmarks");
     if (!user) throw new AppError("User not found", 404);
     return user;
   }
@@ -130,8 +126,8 @@ export default class UserService {
   /**
    * Get user by email
    */
-  public async getUserByEmail(email: string): Promise<any> {
-    const user = await UserRepository.findByEmail(email);
+  public async getUserByEmail(email: string): Promise<IUser> {
+    const user = await User.findOne({ email });
     if (!user) throw new AppError("User not found", 404);
     return user;
   }
@@ -139,30 +135,50 @@ export default class UserService {
   /**
    * List users with optional pagination and search
    */
-  public async listUsers(page: number = 1, limit: number = 10, search?: string) {
+  public async listUsers(
+    page: number = 1,
+    limit: number = 10,
+    search?: string
+  ) {
     const skip = (page - 1) * limit;
-    const query = UserRepository.createQueryBuilder("user").leftJoinAndSelect("user.wallet", "wallet");
+    const query: any = {};
+
     if (search) {
-      query.where("user.email ILIKE :search OR user.first_name ILIKE :search OR user.last_name ILIKE :search", {
-        search: `%${search}%`,
-      });
+      query.$or = [
+        { email: { $regex: search, $options: "i" } },
+        { username: { $regex: search, $options: "i" } },
+      ];
     }
-    query.skip(skip).take(limit).orderBy("user.created_at", "DESC");
-    const [users, total] = await query.getManyAndCount();
-    return { data: users.map((u) => (u)), total, page, limit };
+
+    const [users, total] = await Promise.all([
+      User.find(query).skip(skip).limit(limit).sort({ createdAt: -1 }),
+      User.countDocuments(query),
+    ]);
+
+    return { data: users, total, page, limit };
   }
 
-  public async updateUser(userId: string, data: Partial<User>): Promise<any> {
-    const user = await UserRepository.findOne({ where: { id: userId } });
+  /**
+   * Update user
+   */
+  public async updateUser(userId: string, data: Partial<IUser>): Promise<IUser> {
+    const user = await User.findById(userId);
     if (!user) throw new AppError("User not found", 404);
+
     Object.assign(user, data);
-    await UserRepository.save(user);
+    await user.save();
+
     return user;
   }
 
+  /**
+   * Delete user
+   */
+
   public async deleteUser(userId: string): Promise<void> {
-    const user = await UserRepository.findOne({ where: { id: userId } });
+    const user = await User.findById(userId);
     if (!user) throw new AppError("User not found", 404);
-    await UserRepository.remove(user);
+
+    await user.deleteOne();
   }
 }

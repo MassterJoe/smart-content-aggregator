@@ -7,287 +7,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"AccountStatus": {
-				"enum": [
-					"active",
-					"inactive",
-					"suspended",
-					"pending",
-					"banned"
-				],
-				"type": "string"
-			},
-			"Wallet": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"wallet_reference": {
-						"type": "string"
-					},
-					"wallet_name": {
-						"type": "string"
-					},
-					"account_number": {
-						"type": "string"
-					},
-					"account_name": {
-						"type": "string"
-					},
-					"top_up_account_details": {
-						"properties": {
-							"createdOn": {
-								"type": "string"
-							},
-							"bankName": {
-								"type": "string"
-							},
-							"bankCode": {
-								"type": "string"
-							},
-							"accountName": {
-								"type": "string"
-							},
-							"accountNumber": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"createdOn",
-							"bankName",
-							"bankCode",
-							"accountName",
-							"accountNumber"
-						],
-						"type": "object"
-					},
-					"customer_email": {
-						"type": "string"
-					},
-					"bvn": {
-						"type": "string"
-					},
-					"bvn_dob": {
-						"type": "string"
-					},
-					"balance": {
-						"type": "number",
-						"format": "double"
-					},
-					"total_earned": {
-						"type": "number",
-						"format": "double"
-					},
-					"total_spent": {
-						"type": "number",
-						"format": "double"
-					},
-					"user": {
-						"$ref": "#/components/schemas/User",
-						"description": "Link to a user: optional initially, user may not have a wallet"
-					},
-					"transactions": {
-						"items": {
-							"$ref": "#/components/schemas/Transaction"
-						},
-						"type": "array"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updated_at": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"transactions",
-					"created_at",
-					"updated_at"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"User": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"first_name": {
-						"type": "string"
-					},
-					"last_name": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"password_reset_token": {
-						"type": "string"
-					},
-					"password_reset_expires_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"phone_number": {
-						"type": "string"
-					},
-					"bvn": {
-						"type": "string"
-					},
-					"bvn_dob": {
-						"type": "string"
-					},
-					"otp": {
-						"type": "string"
-					},
-					"email_verification_token": {
-						"type": "string"
-					},
-					"email_verification_expires_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"verified_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"status": {
-						"$ref": "#/components/schemas/AccountStatus"
-					},
-					"last_login": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"wallet": {
-						"$ref": "#/components/schemas/Wallet",
-						"description": "Optional wallet: user may not have a wallet initially"
-					},
-					"transactions": {
-						"items": {
-							"$ref": "#/components/schemas/Transaction"
-						},
-						"type": "array"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updated_at": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"first_name",
-					"last_name",
-					"email",
-					"password",
-					"status",
-					"transactions",
-					"created_at",
-					"updated_at"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"TransactionType": {
-				"enum": [
-					"FUND",
-					"WITHDRAW",
-					"TRANSFER"
-				],
-				"type": "string"
-			},
-			"TransactionStatus": {
-				"enum": [
-					"pending",
-					"completed",
-					"failed",
-					"cancelled"
-				],
-				"type": "string"
-			},
-			"Transaction": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"user": {
-						"$ref": "#/components/schemas/User"
-					},
-					"wallet": {
-						"$ref": "#/components/schemas/Wallet"
-					},
-					"type": {
-						"$ref": "#/components/schemas/TransactionType"
-					},
-					"amount": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"status": {
-						"$ref": "#/components/schemas/TransactionStatus"
-					},
-					"reference": {
-						"type": "string"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updated_at": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"user",
-					"wallet",
-					"type",
-					"amount",
-					"description",
-					"status",
-					"reference",
-					"created_at",
-					"updated_at"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CustomApiResponse_Wallet_": {
-				"properties": {
-					"success": {
-						"type": "boolean"
-					},
-					"status_code": {
-						"type": "number",
-						"format": "double"
-					},
-					"message": {
-						"type": "string"
-					},
-					"data": {
-						"$ref": "#/components/schemas/Wallet"
-					}
-				},
-				"required": [
-					"status_code",
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"CustomApiResponse": {
 				"properties": {
 					"success": {
@@ -309,133 +28,53 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"BVNDetails": {
-				"properties": {
-					"bvn": {
-						"type": "string"
-					},
-					"bvnDateOfBirth": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"bvn",
-					"bvnDateOfBirth"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Partial_AccountDetails_": {
-				"properties": {
-					"accountReference": {
-						"type": "string"
-					},
-					"accountName": {
-						"type": "string"
-					},
-					"currencyCode": {
-						"type": "string"
-					},
-					"contractCode": {
-						"type": "string"
-					},
-					"customerEmail": {
-						"type": "string"
-					},
-					"customerName": {
-						"type": "string"
-					},
-					"bvnDetails": {
-						"$ref": "#/components/schemas/BVNDetails"
-					},
-					"nin": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"description": "Make all properties in T optional"
-			},
-			"CustomApiResponse_Wallet-Array_": {
-				"properties": {
-					"success": {
-						"type": "boolean"
-					},
-					"status_code": {
-						"type": "number",
-						"format": "double"
-					},
-					"message": {
-						"type": "string"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/Wallet"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"status_code",
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"CreateUserDTO": {
 				"description": "DTO for creating a new user",
 				"properties": {
+					"username": {
+						"type": "string",
+						"example": "SalawuJoseph"
+					},
 					"email": {
 						"type": "string",
 						"example": "john.doe@example.com"
-					},
-					"first_name": {
-						"type": "string",
-						"example": "John"
-					},
-					"last_name": {
-						"type": "string",
-						"example": "Doe"
 					},
 					"password": {
 						"type": "string",
 						"example": "Password123!"
 					},
-					"phone_number": {
+					"role": {
 						"type": "string",
-						"example": "+2348012345678"
+						"enum": [
+							"user",
+							"admin"
+						],
+						"example": "user"
 					},
-					"bvn": {
+					"status": {
 						"type": "string",
-						"example": "12345678901"
+						"enum": [
+							"active",
+							"inactive",
+							"suspended"
+						],
+						"example": "active"
 					},
-					"bvn_dob": {
-						"type": "string",
-						"example": "1990-01-01"
+					"interests": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"example": [
+							"tech",
+							"sports"
+						]
 					}
 				},
 				"required": [
+					"username",
 					"email",
-					"first_name",
-					"last_name",
 					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"EmailVerificationDTO": {
-				"description": "DTO for verifying user email",
-				"properties": {
-					"otp": {
-						"type": "string",
-						"example": "123456"
-					},
-					"verification_token": {
-						"type": "string",
-						"example": "a1b2c3d4-e5f6-7890-1234-56789abcdef0"
-					}
-				},
-				"required": [
-					"verification_token"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -462,25 +101,255 @@
 			"UpdateUserDTO": {
 				"description": "DTO for updating an existing user",
 				"properties": {
-					"first_name": {
+					"username": {
 						"type": "string",
-						"example": "John"
-					},
-					"last_name": {
-						"type": "string",
-						"example": "Doe"
+						"example": "NewUsername"
 					},
 					"email": {
 						"type": "string",
 						"example": "john.doe@example.com"
 					},
-					"phone_number": {
-						"type": "string",
-						"example": "+2348012345678"
-					},
 					"password": {
 						"type": "string",
 						"example": "NewPassword123!"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"active",
+							"inactive",
+							"suspended"
+						],
+						"example": "inactive"
+					},
+					"interests": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"example": [
+							"politics",
+							"health"
+						]
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EmailVerificationDTO": {
+				"description": "DTO for verifying user email",
+				"properties": {
+					"otp": {
+						"type": "string",
+						"example": "123456"
+					},
+					"verification_token": {
+						"type": "string",
+						"example": "a1b2c3d4-e5f6-7890-1234-56789abcdef0"
+					}
+				},
+				"required": [
+					"otp",
+					"verification_token"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InteractionType": {
+				"type": "string",
+				"enum": [
+					"like",
+					"love",
+					"angry",
+					"sad",
+					"comment",
+					"share",
+					"bookmark",
+					"view"
+				]
+			},
+			"InteractionResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "string",
+						"example": "64e9c1b2a3d4f5e6b7c8d9e0"
+					},
+					"articleId": {
+						"type": "string",
+						"example": "64e9b5d2f1b2c3d4e5f6a7b8"
+					},
+					"userId": {
+						"type": "string",
+						"example": "64e9a1b2c3d4e5f6a7b8c9d0"
+					},
+					"type": {
+						"$ref": "#/components/schemas/InteractionType",
+						"example": "like"
+					},
+					"comment": {
+						"type": "string",
+						"example": "Great article! Very insightful."
+					},
+					"createdAt": {
+						"type": "string",
+						"example": "2025-09-01T12:34:56.000Z"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2025-09-01T12:34:56.000Z"
+					}
+				},
+				"required": [
+					"id",
+					"articleId",
+					"userId",
+					"type",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateInteractionDTO": {
+				"properties": {
+					"articleId": {
+						"type": "string",
+						"example": "64e9b5d2f1b2c3d4e5f6a7b8"
+					},
+					"userId": {
+						"type": "string",
+						"example": "64e9a1b2c3d4e5f6a7b8c9d0"
+					},
+					"type": {
+						"$ref": "#/components/schemas/InteractionType",
+						"example": "like"
+					},
+					"comment": {
+						"type": "string",
+						"example": "Great article! Very insightful."
+					}
+				},
+				"required": [
+					"articleId",
+					"userId",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ArticleResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "string",
+						"example": "64e9b5d2f1b2c3d4e5f6a7b8"
+					},
+					"title": {
+						"type": "string",
+						"example": "How to Build a Content Aggregator"
+					},
+					"content": {
+						"type": "string",
+						"example": "This article explains how to build a smart content aggregator..."
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"example": [
+							"tech",
+							"nodejs",
+							"aggregator"
+						]
+					},
+					"author": {
+						"type": "string",
+						"example": "64e9a1b2c3d4e5f6a7b8c9d0"
+					},
+					"views": {
+						"type": "number",
+						"format": "double",
+						"example": 123
+					},
+					"createdAt": {
+						"type": "string",
+						"example": "2025-09-01T12:34:56.000Z"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2025-09-01T12:34:56.000Z"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"content",
+					"tags",
+					"author",
+					"views",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateArticleDTO": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"example": "How AI is Changing the World"
+					},
+					"content": {
+						"type": "string",
+						"example": "Artificial Intelligence is transforming industries..."
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"example": [
+							"tech",
+							"ai",
+							"innovation"
+						]
+					},
+					"author": {
+						"type": "string",
+						"example": "60f7f0a5b6f7c9a3d8b12345"
+					},
+					"url": {
+						"type": "string",
+						"example": "https://example.com/article"
+					}
+				},
+				"required": [
+					"title",
+					"content",
+					"author"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateArticleDTO": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"example": "Updated Article Title"
+					},
+					"content": {
+						"type": "string",
+						"example": "Updated article content goes here..."
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"example": [
+							"science",
+							"research"
+						]
 					}
 				},
 				"type": "object",
@@ -496,9 +365,9 @@
 		}
 	},
 	"info": {
-		"title": "airtimeex",
+		"title": "smart-content-aggregator",
 		"version": "1.0.0",
-		"description": "AirtimeEX",
+		"description": "This a project for Tobams group associate backend role",
 		"license": {
 			"name": "ISC"
 		},
@@ -507,145 +376,6 @@
 		}
 	},
 	"paths": {
-		"/wallets/{userId}": {
-			"post": {
-				"operationId": "CreateWallet",
-				"responses": {
-					"201": {
-						"description": "Wallet created successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse_Wallet_"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Create wallet for a user",
-				"tags": [
-					"Wallets"
-				],
-				"security": [
-					{
-						"bearerAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Partial_AccountDetails_"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/wallets/{walletId}": {
-			"get": {
-				"operationId": "GetAndSyncWalletDetails",
-				"responses": {
-					"200": {
-						"description": "Wallet details retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse_Wallet_"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Wallet not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Sync wallet details from Monnify and update DB",
-				"tags": [
-					"Wallets"
-				],
-				"security": [
-					{
-						"bearerAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "walletId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/wallets": {
-			"get": {
-				"operationId": "GetAllWallets",
-				"responses": {
-					"200": {
-						"description": "All wallets retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse_Wallet-Array_"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Failed to fetch wallets",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Get all wallets from Monnify",
-				"tags": [
-					"Wallets"
-				],
-				"security": [
-					{
-						"bearerAuth": []
-					}
-				],
-				"parameters": []
-			}
-		},
 		"/users": {
 			"post": {
 				"operationId": "RegisterUser",
@@ -747,99 +477,16 @@
 						"schema": {
 							"type": "string"
 						}
-					}
-				]
-			}
-		},
-		"/users/emailVerification/{verification_token}/{otp}": {
-			"get": {
-				"operationId": "ValidateEmail",
-				"responses": {
-					"200": {
-						"description": "Email verified successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Users"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "verification_token",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
 					},
 					{
-						"in": "path",
-						"name": "otp",
-						"required": true,
+						"in": "query",
+						"name": "status",
+						"required": false,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
-			}
-		},
-		"/users/verify-email": {
-			"post": {
-				"operationId": "VerifyEmail",
-				"responses": {
-					"200": {
-						"description": "Email verified successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Users"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/EmailVerificationDTO"
-							}
-						}
-					}
-				}
 			}
 		},
 		"/users/login": {
@@ -1029,12 +676,12 @@
 				]
 			}
 		},
-		"/transactions/{id}": {
-			"get": {
-				"operationId": "GetTransactionById",
+		"/users/validate-email": {
+			"post": {
+				"operationId": "ValidateEmail",
 				"responses": {
 					"200": {
-						"description": "Transaction retrieved successfully",
+						"description": "Email verified successfully",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1043,8 +690,8 @@
 							}
 						}
 					},
-					"404": {
-						"description": "Transaction not found",
+					"400": {
+						"description": "Invalid or expired token",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1054,15 +701,117 @@
 						}
 					}
 				},
-				"description": "Get a transaction by ID",
+				"description": "Validate user email using token + OTP",
 				"tags": [
-					"Transactions"
+					"Users"
 				],
-				"security": [
-					{
-						"bearerAuth": []
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EmailVerificationDTO"
+							}
+						}
 					}
+				}
+			}
+		},
+		"/interactions": {
+			"post": {
+				"operationId": "CreateInteraction",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InteractionResponseDTO"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Interactions"
 				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateInteractionDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/interactions/{articleId}": {
+			"get": {
+				"operationId": "GetInteractions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/InteractionResponseDTO"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Interactions"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "articleId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/interactions/{id}": {
+			"delete": {
+				"operationId": "DeleteInteraction",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Interactions"
+				],
+				"security": [],
 				"parameters": [
 					{
 						"in": "path",
@@ -1075,136 +824,25 @@
 				]
 			}
 		},
-		"/transactions/reference/{reference}": {
-			"get": {
-				"operationId": "GetTransactionByReference",
+		"/articles/{userId}": {
+			"post": {
+				"operationId": "CreateArticle",
 				"responses": {
 					"200": {
-						"description": "Transaction retrieved successfully",
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Transaction not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
+									"$ref": "#/components/schemas/ArticleResponseDTO"
 								}
 							}
 						}
 					}
 				},
-				"description": "Get a transaction by reference",
 				"tags": [
-					"Transactions"
+					"Articles"
 				],
-				"security": [
-					{
-						"bearerAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "reference",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/transactions": {
-			"get": {
-				"operationId": "ListTransactions",
-				"responses": {
-					"200": {
-						"description": "Transactions listed successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "List transactions with optional filters",
-				"tags": [
-					"Transactions"
-				],
-				"security": [
-					{
-						"bearerAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "userId",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "walletId",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "type",
-						"required": false,
-						"schema": {
-							"$ref": "#/components/schemas/TransactionType"
-						}
-					},
-					{
-						"in": "query",
-						"name": "status",
-						"required": false,
-						"schema": {
-							"$ref": "#/components/schemas/TransactionStatus"
-						}
-					}
-				]
-			}
-		},
-		"/transactions/user/{userId}": {
-			"get": {
-				"operationId": "GetUserTransactions",
-				"responses": {
-					"200": {
-						"description": "User transactions retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CustomApiResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Get all transactions for a user",
-				"tags": [
-					"Transactions"
-				],
-				"security": [
-					{
-						"bearerAuth": []
-					}
-				],
+				"security": [],
 				"parameters": [
 					{
 						"in": "path",
@@ -1214,7 +852,118 @@
 							"type": "string"
 						}
 					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateArticleDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/articles/{id}": {
+			"put": {
+				"operationId": "UpdateArticle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ArticleResponseDTO"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateArticleDTO"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetArticle",
+				"responses": {
+					"200": {
+						"description": "Article retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ArticleResponseDTO"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
 				]
+			}
+		},
+		"/articles": {
+			"get": {
+				"operationId": "GetAllArticles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"description": "Get all articles",
+				"tags": [
+					"Articles"
+				],
+				"security": [],
+				"parameters": []
 			}
 		}
 	},

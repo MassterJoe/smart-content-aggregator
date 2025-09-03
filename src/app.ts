@@ -11,9 +11,9 @@ const logger = new Logger();
     const { app: appInfo } = env;
 
     const app: express.Application = express();
-    if (!env.isProduction) {
-        app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    }
+   if (!env.isProduction) {
+       app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+   }
     await expressConfig(app);
 
     

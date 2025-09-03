@@ -40,12 +40,9 @@ export const env = {
         level: getOsEnvWithDefault("LOG_LEVEL", "debug"),
     },
     db: {
-        pg: {
-            host: getOsEnv("PG_HOST"),
-            port: normalizePort(getOsEnv("PG_PORT")) || 27017,
-            user: getOsEnv("PG_USERNAME"),
-            pass: getOsEnv("PG_PASSWORD"),
-            database: getOsEnv("PG_DATBASE"),
+        mongo: {
+            url: getOsEnv("MONGO_DB_URL"),
+            dbName: getOsEnv("MONGO_DB_NAME"),
         },
     },
     // cache: {
@@ -63,15 +60,6 @@ export const env = {
     SENDGRID_API_KEY: getOsEnv("SENDGRID_API_KEY"),
     MAIL_FROM: getOsEnv("MAIL_FROM"),
     RABBITMQ_URL: getOsEnv("RABBITMQ_URL"),
-    monnify: {
-        baseUrl: getOsEnv("MONNIFY_BASE_URL"),
-        apiKey: getOsEnv("MONNIFY_APIKEY"),
-        clientSecret: getOsEnv("MONNIFY_SECRET"),
-        contractCode: getOsEnv("CONTRACT"),
-        webhookSecret: getOsEnv("MONNIFY_WEBHOOK_SECRET"),
-        walletAccountNumber: getOsEnv("WALLETACCOUNTNUMBER"),
-        env: getOsEnv("MONNIFY_ENV"),
-    },
     // OKRA:{
     //     BASE_URL: getOsEnv('OKRA_URL'),
     //     KEY: getOsEnv('OKRA_KEY'),
