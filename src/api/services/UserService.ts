@@ -25,18 +25,17 @@ export default class UserService {
    * Register new user
    */
   public async registerUser(userData: Partial<IUser>): Promise<IUser> {
-    // Check if email already exists
+    
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) throw new AppError("Email already in use", 400);
 
-    // Hash password
-    const password_hash = await hashString(userData.password as string);
+        const password_hash = await hashString(userData.password as string);
 
-    // Generate OTP and verification token
+    
     const otp = generateRandomString({ length: 6, numericOnly: true });
     const { uuid, expiresAt } = generateUUID();
 
-    // Create user
+    
     const user = new User({
       ...userData,
       password: password_hash,
@@ -48,7 +47,7 @@ export default class UserService {
 
     await user.save();
 
-    // Queue verification email
+    
     try {
       const verification_link = `${env.app.url}/verify-email?verification_token=${uuid}&otp=${otp}`;
       await this.rabbitmqService.sendRabbitMQMessage("registration", {

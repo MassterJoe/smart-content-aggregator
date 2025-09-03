@@ -79,28 +79,26 @@ class ArticleService {
    * Recommend articles for a user based on interests and popularity
    */
   public async getRecommendations(userId: string, limit: number = 5): Promise<ArticleResponseDTO[]> {
-    // 1️⃣ Fetch user interests
+
     const user = await User.findById(userId);
     if (!user) throw new Error("User not found");
 
     const userInterests = user.interests || []; 
 
-    // 2️⃣ Get articles the user has already interacted with
+
     const interactions = await InteractionModel.find({ user: userId });
     const seenArticleIds = interactions.map(i => i.article.toString());
 
-    // 3️⃣ Recommended based on user interests (unseen)
+
     const interestArticles = await ArticleModel.find({
       tags: { $in: userInterests },
       _id: { $nin: seenArticleIds }
     }).limit(limit);
 
-    // 4️⃣ If not enough, recommend popular articles the user hasn't seen
     let recommendations = interestArticles;
     if (recommendations.length < limit) {
       const remaining = limit - recommendations.length;
 
-      // Count interactions per article
       const popularArticles = await InteractionModel.aggregate([
         { $match: { article: { $nin: seenArticleIds.map(id => new mongoose.Types.ObjectId(id)) } } },
         { $group: { _id: "$article", count: { $sum: 1 } } },
@@ -114,7 +112,6 @@ class ArticleService {
       recommendations = recommendations.concat(popularArticlesDocs);
     }
 
-    // 5️⃣ Map to DTO
     return recommendations.map(a => ({
       id: a._id.toString(),
       title: a.title,
