@@ -15,8 +15,8 @@ Smart Content Aggregator Service is an API that enables users to publish, intera
 - [Getting Started](#getting-started)  
 - [Project Structure](#project-structure)  
 - [API Endpoints](#api-endpoints)  
-- [Usage](#usage)   
-- [What i would do if i had more time] (#What-i-would-do-if-i-had-more-time)
+- [Usage](#usage) 
+- [What i would do if i had more time](#What-i-would-do-if-i-had-more-time)
 - [License](#license)  
 
 ---
